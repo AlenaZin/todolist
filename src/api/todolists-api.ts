@@ -84,10 +84,10 @@ export type TodolistType = {
 export type ResponseType<D = {}> = {
   resultCode: number
   messages: string[]
-  fieldsErrors: FieldErrorType[]
+  fieldsErrors?: FieldErrorType[]
   data: D
 }
-type FieldErrorType = {
+export type FieldErrorType = {
   error: string
   field: string
 }
@@ -117,7 +117,7 @@ export type TasksType = {
   addedDate:string
   //completed: boolean    
 }
-type GetTasksResponse = {
+export type GetTasksResponse = {
   totalCount: number
   error: string | null
   items: TasksType[]

@@ -1,10 +1,9 @@
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
-import { AppRootStateType, useAppDispatch } from "../../../../app/store";
-import { removeTaskTC, addTaskTC, updateTaskTC } from "../../tasks-reducer";
+import { AppRootStateType, useActions, useAllActions, useAppDispatch } from "../../../../app/store";
 import { TodolistPropsType } from "../Todolist";
 import { TaskStatuses, TasksType } from "../../../../api/todolists-api";
-
+import { tasksActions } from "../..";
 
 
 export const useTodolist = (
@@ -12,6 +11,8 @@ export const useTodolist = (
 ) => {
   const {todolist, onChangeFilter, onChengeTodolistTitle, onRemoveTodoList} = props
   const dispatch = useAppDispatch();
+  // const {addTaskTC, fetchTasksTC, removeTaskTC, updateTaskTC} = useActions(tasksActions)
+  const {addTaskTC, removeTaskTC, updateTaskTC} = useAllActions()
   const tasks = useSelector<AppRootStateType, TasksType[]>(state => state.tasks[todolist.id])
 
   const onAllClickHandler = useCallback(() => {onChangeFilter("all", todolist.id)}, [onChangeFilter, todolist.id])
@@ -27,19 +28,19 @@ export const useTodolist = (
     }, [todolist.id]);
     
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskTC(title, todolist.id))
+    addTaskTC({title, todolistId: todolist.id})
   }, [dispatch, todolist.id])
 
   const chengeTaskTitle = useCallback((id: string, title: string) => {
-    dispatch(updateTaskTC(id, { title }, todolist.id))
+    updateTaskTC({id, domainModel: { title }, todolistId: todolist.id})
   }, [dispatch, todolist.id])
 
   const changeTaskStatus = useCallback((id: string, status: TaskStatuses) => {    
-    dispatch(updateTaskTC(id, { status }, todolist.id))
+    dispatch(updateTaskTC({id, domainModel: { status }, todolistId: todolist.id}))
   }, [dispatch, todolist.id]);
 
   const removeTask = useCallback((id: string) => {
-    dispatch(removeTaskTC(id, todolist.id))
+    removeTaskTC({id, todolistId: todolist.id})
   }, [dispatch, todolist.id])
 
   let tasksForTodolist: TasksType[] = tasks;

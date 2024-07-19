@@ -3,20 +3,21 @@ import {Container } from '@mui/material';
 import ButtonAppBar from '../components/buttonAppBar/ButtonAppBar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { ErrorSnackbar } from '../components/ErrorSnackbar';
-import { useAppDispatch, useAppSelector } from './store';
+import { AppRootStateType, useAppDispatch, useAppSelector } from './store';
 import { Outlet } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 import { initializedAppTC } from './app-reducer';
+import { selectStatus, selektInitialized } from './selectors';
 
 type PropsType = {
   demo?: boolean
 }
 
 export function App({demo = false}: PropsType) { 
-  const status = useAppSelector(state => state.app.status)
-  const initialized = useAppSelector(state => state.app.initialized)
+  const status = useAppSelector(selectStatus)
+  const initialized = useAppSelector(selektInitialized)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

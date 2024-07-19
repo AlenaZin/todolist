@@ -6,8 +6,6 @@ import React, { useEffect } from 'react';
 import { Task } from './tasks/Task';
 import { useTodolist } from './hooks/useTodolist';
 import { FilterValuesType, TodolistDomainType } from '../todolists-reducer';
-import { useAppDispatch } from '../../../app/store';
-import { fetchTasksTC } from '../tasks-reducer';
 
 
 export type TodolistPropsType = {  
@@ -21,7 +19,6 @@ export type TodolistPropsType = {
 export const Todolist = React.memo(({demo = false, ...props}: TodolistPropsType) => {
 
   const {onAllClickHandler, onActiveClickHandler, onCompletedClickHandler, removeTodoList, chengeTodolistTitle, addTask, chengeTaskTitle, changeTaskStatus, removeTask, tasksForTodolist} = useTodolist(props)
-  const dispatch = useAppDispatch();
   
   useEffect(()=>{
     if (demo) {

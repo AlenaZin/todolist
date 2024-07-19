@@ -5,8 +5,8 @@ import { AddItemForm } from '../components/addItemForm/AddItemForn';
 import { Todolist } from '../features/todolistsList/todolist/Todolist';
 import { Container, Grid, Paper } from '@mui/material';
 import ButtonAppBar from '../components/buttonAppBar/ButtonAppBar';
-import { addTodolistAC, chengeTodolistFilterAC, chengeTodolistTitleAC, removeTodolistAC, todolistsReducer } from '../features/todolistsList/todolists-reducer';
-import { addTaskAC, removeTaskAC, tasksReducer, updateTaskAC } from '../features/todolistsList/tasks-reducer';
+import { addTodolistTC, chengeTodolistFilterAC, chengeTodolistTitleTC, removeTodolistTC, todolistsReducer } from '../features/todolistsList/todolists-reducer';
+import { tasksReducer } from '../features/todolistsList/tasks-reducer';
 import { TaskPriorityes, TaskStatuses, TasksType } from '../api/todolists-api';
 
 export type FilterValuesType = "all" | "completed" | "active"
@@ -99,8 +99,8 @@ export function AppWithReducers() {
   });
 
   const removeTodoList = (todolistId: string) => {
-    dispatchToTodolistsReducer(removeTodolistAC({id: todolistId}))
-    dispatchToTasksReducer(removeTodolistAC({id: todolistId}))
+    dispatchToTodolistsReducer(removeTodolistTC.fulfilled({id: todolistId}, '', todolistId))
+    dispatchToTasksReducer(removeTodolistTC.fulfilled({id: todolistId}, '', todolistId))
   }
 
   const changeFilter = (filter: FilterValuesType, todolistId: string) => {
@@ -108,40 +108,40 @@ export function AppWithReducers() {
   }
 
   const AddTodolist = (title: string) => {
-    dispatchToTodolistsReducer(addTodolistAC({todolist: {id: v1(), title, addedDate: '', order: 0}}))
-    dispatchToTasksReducer(addTodolistAC({todolist: {id: v1(), title, addedDate: '', order: 0}}))
+    dispatchToTodolistsReducer(addTodolistTC.fulfilled({todolist: {id: v1(), title, addedDate: '', order: 0}}, '', title))
+    dispatchToTasksReducer(addTodolistTC.fulfilled({todolist: {id: v1(), title, addedDate: '', order: 0}}, '', title))
   }
 
-  const chengeTodolistTitle = (todolistId: string, newTitle: string) => {
-    dispatchToTodolistsReducer(chengeTodolistTitleAC({title: newTitle, id: todolistId}))
+  const chengeTodolistTitle = (todolistId: string, title: string) => {
+    dispatchToTodolistsReducer(chengeTodolistTitleTC.fulfilled({title: title, id: todolistId}, '', {title, todolistId}))
   }
 
-  const removeTasks = (id: string, todolistId: string) => {
-    dispatchToTasksReducer(removeTaskAC({id: id, todolistId: todolistId}))
-  }
+  // const removeTasks = (id: string, todolistId: string) => {
+  //   dispatchToTasksReducer(removeTaskAC({id: id, todolistId: todolistId}))
+  // }
 
-  function addTask(title: string, todolistId: string) {
-    dispatchToTasksReducer(addTaskAC({task: {
-      id: v1(),
-      title: title,
-      status: TaskStatuses.New,
-      priority: TaskPriorityes.Low,
-      startDate: "",
-      deadline: "",
-      todoListId: todolistId,
-      order: 0,
-      addedDate: "",
-      description: "",
-    }}))
-  }
+  // function addTask(title: string, todolistId: string) {
+  //   dispatchToTasksReducer(addTaskAC({task: {
+  //     id: v1(),
+  //     title: title,
+  //     status: TaskStatuses.New,
+  //     priority: TaskPriorityes.Low,
+  //     startDate: "",
+  //     deadline: "",
+  //     todoListId: todolistId,
+  //     order: 0,
+  //     addedDate: "",
+  //     description: "",
+  //   }}))
+  // }
 
-  const chengeStatus = (id: string, status: TaskStatuses, todolistId: string) => {
-    dispatchToTasksReducer(updateTaskAC({id: id, model: {status}, todolistId: todolistId}))
-  }
+  // const chengeStatus = (id: string, status: TaskStatuses, todolistId: string) => {
+  //   dispatchToTasksReducer(updateTaskAC({id: id, model: {status}, todolistId: todolistId}))
+  // }
 
-  const chengeTaskTitle = (todolistId: string, id: string, newTitle: string) => {
-    dispatchToTasksReducer(updateTaskAC({id: id, model: {title: newTitle}, todolistId: todolistId}))
-  }
+  // const chengeTaskTitle = (todolistId: string, id: string, newTitle: string) => {
+  //   dispatchToTasksReducer(updateTaskAC({id: id, model: {title: newTitle}, todolistId: todolistId}))
+  // }
 
   return (
     <div className="App">

@@ -16,8 +16,8 @@ export const useTodolistsList = () => {
   const addTodolist = useCallback((title: string) => {
     dispatch(addTodolistTC(title))
   }, [dispatch])
-  const chengeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
-    dispatch(chengeTodolistTitleTC(newTitle, todolistId))
+  const chengeTodolistTitle = useCallback((todolistId: string, title: string) => {
+    dispatch(chengeTodolistTitleTC({title, todolistId}))
   }, [dispatch])
 
   return {todolists, removeTodoList, changeFilter, addTodolist, chengeTodolistTitle}

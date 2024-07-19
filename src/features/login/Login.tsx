@@ -7,11 +7,17 @@ import FormGroup from '@mui/material/FormGroup'
 import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { useFormik } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { loginTC } from './auth-reducer'
 import { useNavigate } from 'react-router-dom'
 import { ChevronLeft } from '@mui/icons-material'
+
+type FormValuesForm = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
 export const Login = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
@@ -45,9 +51,14 @@ export const Login = () => {
       password: "",
       rememberMe: false
     },
-    onSubmit: (values) => {
-      dispatch(loginTC(values))
-      console.log(JSON.stringify(values));
+    onSubmit: async (values: FormValuesForm, formikHelpers: FormikHelpers<FormValuesForm>) => {
+      const action = await dispatch(loginTC(values))
+      if(loginTC.rejected.match(action)) {
+        if(action.payload?.fieldsErrors?.length) {
+          const error = action.payload?.fieldsErrors[0]
+          formikHelpers.setFieldError(error.field, error.error)
+        }
+      }
     },
   });
 
